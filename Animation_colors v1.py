@@ -1,4 +1,5 @@
 ## Animation : Post-process the output of the Solver to create an animation ##
+
 from numpy import *
 import time
 import matplotlib.pyplot as plt
@@ -10,7 +11,7 @@ import matplotlib.animation as animation
 ############################     Parameters     ##############################
 ##############################################################################
 input_folder = './Sim/'
-output_file_name_test = input_folder+'test_line.txt'
+output_file_name_test = input_folder+'test_stability.txt'
 
 default_save_name = input_folder+'anim_test.gif'
 
@@ -75,8 +76,8 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
     R=[]
     G=[]
     for i in range(N_agents):
-        R.append(0.2)
-        G.append(0.3)
+        R.append(0)
+        G.append(0.2)
         
     # Initialize the patches that rpz the BoS
     BoS_anim = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.3, color='blue',alpha=0.5) ) for pos in BoSPositions[0]]
@@ -119,28 +120,24 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
     time_text = ax.text(0.5*(xmin+xmax),ymin+0.05*abs(ymin) , 'Time:')
 
 
-    Diff0=[0,0,0,0,0]
+    
     def animate(t_step):
 
         #ax.patches = ax.patches[0:N_agents]
         t_step += 1
-        
+        maxdiff = 0
         for i in range(N_agents):
             
             
             Diff=sqrt((CoMPositions[t_step,i,0]-BoSPositions[t_step,i,0])**2 + (CoMPositions[t_step,i,1]-BoSPositions[t_step,i,1])**2)
-            maxdiff = 0
-            if Diff0[i]-Diff<0 and R[i] < 0.9:
-                R[i]+=0.1
-                
-            elif Diff0[i]-Diff>0 and R[i]>0.1:
-                R[i]-=0.1
+            
+            R[i] = Diff*10
+            if R[i] < 0:
+                R[i]=0
+            elif R[i]>1:
+                R[i]=1
             else:
                 pass
-            if maxdiff < abs(Diff0[i]-Diff):
-                maxdiff = abs(Diff0[i]-Diff)
-            Diff0[i]=Diff
-            
             CoM_anim[i].set_color((R[i],G[i],0.2))
             
             CoM_anim[i].set_center((CoMPositions[t_step,i,0], CoMPositions[t_step,i,1]))
@@ -151,10 +148,10 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
             Linkes[i].set_data(thisx,thisy)
             
         time_text.set_text('Time: '+str(round(dt*t_step,2))+'s')
-        print(maxdiff)
+        
         return None
-    
-    
+
+##diff maximum = 0,699316
     #Set the the interval between frames so the visualisation is at real speed
     interval_delay = int(dt*1000) # milliseconds between frames (must be an int)
     
