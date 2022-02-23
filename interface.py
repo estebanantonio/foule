@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 from tkinter import * 
+from PIL import Image, ImageTk 
 
 ##############################################################################
 ############################     Parameters     ##############################
@@ -134,7 +135,7 @@ def create_animation(save_name, output_file_name):
         return None
     
     for i in range(0,N_frames) :
-        plt.savefig(str(i)+".png")
+        #plt.savefig(str(i)+".png")
         animate(i)
     
     """
@@ -177,7 +178,7 @@ def X_pos_plot(default_file_name):
 
     plt.legend()
     plt.savefig("Xposplot.png")
-    plt.show()
+    #plt.show()
     
   
 def trajectory_plot(default_file_name):
@@ -205,7 +206,7 @@ def trajectory_plot(default_file_name):
               ,'-o')
     plt.legend()
     plt.savefig("trajectoryplot.png")
-    plt.show()
+    #plt.show()
 ##############################################################################
 ############################     Tkinter        ##############################
 ##############################################################################
@@ -229,7 +230,7 @@ def interface1() :
 def importerClicked() :
     print(value.get())
     create_animation(default_save_name, value.get())
-    #trajectory_plot(value.get())
+    trajectory_plot(value.get())
     #X_pos_plot(value.get())
     for widget in fenetre.winfo_children():
         widget.destroy()
@@ -247,16 +248,31 @@ def interface2() :
 def afficherXPlot():
     print("ou")
     
-    photo = PhotoImage(file="trajectoryplot.png")
     
-    canvas = Canvas(fenetre,width=1024, height=1024)
-    canvas.create_image(0, 0, anchor=NW, image=photo)
-    canvas.pack()
+    image = Image.open("trajectoryplot.png") 
+    photo = ImageTk.PhotoImage(image) 
+ 
+    canvas = Canvas(fenetre, width = image.size[0], height = image.size[1]) 
+    canvas.create_image(0,0, anchor = NW, image=photo)
+    canvas.pack() 
     
     """
-    canvas2.create_image(0, 0, anchor=NW, image=PhotoImage(file="trajectoryplot.png"))
-    canvas2.pack
-    canvas2.update_idletasks"""
+    img = PhotoImage(file="trajectoryplot.png")
+    
+    canvas = Canvas(canvas.fenetre)
+    canvas.configure(width=img.width(), height=img.height())
+    canvas.create_image(img.width()/2,img.height()/2,image=img)
+ 
+    canvas.image = img ## Association de l'image au canva.
+ 
+    canvas.grid(row=1,column=1)"""
+    
+    """
+    canvas = Canvas(fenetre,width=1024, height=1024)
+    canvas.create_image(250, 250, anchor=NW, image=photo)
+    canvas.pack()"""
+    
+    
     
 fenetre = Tk()
 
