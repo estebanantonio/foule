@@ -5,7 +5,7 @@ from numpy import *
 import time
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-
+import moviepy.editor as mp
 
 
 ##############################################################################
@@ -164,6 +164,8 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
                                    interval=interval_delay)
 
     anim.save(save_name, writer='Pillow')
+    clip = mp.VideoFileClip(save_name)
+    clip.write_videofile("resultat.mp4")
     #plt.show()
     return None
 
