@@ -1,13 +1,16 @@
 #https://python.doctor/page-tkinter-interface-graphique-python-tutoriel
 #http://tkinter.fdex.eu/doc/
-
+# test
 ## Animation : Post-process the output of the Solver to create an animation ##
 from numpy import *
 import time
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-from tkinter import * 
+from tkinter import *
+import threading
+import imageio #conda install -c conda-forge imageio
+from PIL import Image, ImageTk
 
 ##############################################################################
 ############################     Parameters     ##############################
@@ -247,16 +250,25 @@ def interface2() :
 def afficherXPlot():
     print("ou")
     
-    photo = PhotoImage(file="trajectoryplot.png")
-    
-    canvas = Canvas(fenetre,width=1024, height=1024)
-    canvas.create_image(0, 0, anchor=NW, image=photo)
-    canvas.pack()
-    
+    my_label = Label(fenetre)
+    my_label.pack()
+    thread = threading.Thread(target=stream, args=(my_label,))
+    thread.daemon = 1
+    thread.start()
     """
     canvas2.create_image(0, 0, anchor=NW, image=PhotoImage(file="trajectoryplot.png"))
     canvas2.pack
     canvas2.update_idletasks"""
+    
+def stream(label):
+    
+    video_name = "video.mp4" #This is your video file path
+    video = imageio.get_reader(video_name)
+    
+    for image in video.iter_data():
+        frame_image = ImageTk.PhotoImage(Image.fromarray(image))
+        label.config(image=frame_image)
+        label.image = frame_image    
     
 fenetre = Tk()
 
