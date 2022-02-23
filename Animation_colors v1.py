@@ -11,7 +11,7 @@ import matplotlib.animation as animation
 ############################     Parameters     ##############################
 ##############################################################################
 input_folder = './Sim/'
-output_file_name_test = input_folder+'test_stability.txt'
+output_file_name_test = input_folder+'test_line.txt'
 
 default_save_name = input_folder+'anim_test.gif'
 
@@ -118,20 +118,23 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
     
     # time marker centered below the anim:
     time_text = ax.text(0.5*(xmin+xmax),ymin+0.05*abs(ymin) , 'Time:')
-
-
-    
+    maxdiff = 0
+    for i in range(N_frames):
+        for j in range(N_agents):
+            Diff=sqrt((CoMPositions[i,j,0]-BoSPositions[i,j,0])**2 + (CoMPositions[i,j,1]-BoSPositions[i,j,1])**2)
+            if maxdiff < Diff : 
+                maxdiff = Diff
+    print(maxdiff)
     def animate(t_step):
 
         #ax.patches = ax.patches[0:N_agents]
         t_step += 1
-        maxdiff = 0
         for i in range(N_agents):
             
             
             Diff=sqrt((CoMPositions[t_step,i,0]-BoSPositions[t_step,i,0])**2 + (CoMPositions[t_step,i,1]-BoSPositions[t_step,i,1])**2)
             
-            R[i] = Diff*10
+            R[i] = Diff/maxdiff
             if R[i] < 0:
                 R[i]=0
             elif R[i]>1:
