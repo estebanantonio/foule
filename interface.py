@@ -175,8 +175,8 @@ def create_animation(save_name, output_file_name):
                                    interval=interval_delay)
 
     anim.save(save_name, writer='Pillow')
-    #clip = mp.VideoFileClip(save_name)
-    #clip.write_videofile("resultat.mp4")
+    clip = mp.VideoFileClip(save_name)
+    clip.write_videofile("resultat.mp4")
     #plt.show()
     return None
     
@@ -321,11 +321,11 @@ def interface1() :
 
 def importerClicked() :
     print(value.get())
-    create_animation("tet.gif", "./Sim/test_line.txt") #default_save_name
+    create_animation(default_save_name, value.get()) #default_save_name
     print("finished animation")
-    trajectory_plot("./Sim/test_line.txt")
+    trajectory_plot(value.get())
     print("finished traj")
-    X_pos_plot("./Sim/test_line.txt")
+    X_pos_plot(value.get())
     print("finished xplot")
     
     for widget in fenetre.winfo_children():
