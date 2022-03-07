@@ -1,6 +1,6 @@
 #https://python.doctor/page-tkinter-interface-graphique-python-tutoriel
 #http://tkinter.fdex.eu/doc/
-
+# 
 ## Animation : Post-process the output of the Solver to create an animation ##
 from numpy import *
 import time
