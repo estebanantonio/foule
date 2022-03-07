@@ -107,10 +107,10 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
     # Set the Size of the final canevas
     # Set the Size of the final canevas
     agent_radius = 0.5
-    xmin = min( [ min(BoSPositions[:,:,0].flatten()),  min(CoMPositions[:,:,0].flatten()) ] )*1.2
-    xmax = max( [ max(BoSPositions[:,:,0].flatten()), max(CoMPositions[:,:,0].flatten()) ]  )*1.2
-    ymin = min( [ min(BoSPositions[:,:,1].flatten()), min(CoMPositions[:,:,1].flatten()) ] )*1.2
-    ymax = max( [ max(BoSPositions[:,:,1].flatten()), max(CoMPositions[:,:,1].flatten()) ] )*1.2
+    xmin = min( [ min(BoSPositions[:,:,0].flatten()),  min(CoMPositions[:,:,0].flatten()) ] )*1.2 - agent_radius
+    xmax = max( [ max(BoSPositions[:,:,0].flatten()), max(CoMPositions[:,:,0].flatten()) ]  )*1.2 + agent_radius
+    ymin = min( [ min(BoSPositions[:,:,1].flatten()), min(CoMPositions[:,:,1].flatten()) ] )*1.2 - agent_radius
+    ymax = max( [ max(BoSPositions[:,:,1].flatten()), max(CoMPositions[:,:,1].flatten()) ] )*1.2 + agent_radius
 
     if abs(xmin)-1e-3 < agent_radius : xmin = -2*agent_radius
     if abs(ymin)-1e-3 < agent_radius : ymin = -2*agent_radius
