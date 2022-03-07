@@ -1,6 +1,6 @@
 #https://python.doctor/page-tkinter-interface-graphique-python-tutoriel
 #http://tkinter.fdex.eu/doc/
-
+# 
 ## Animation : Post-process the output of the Solver to create an animation ##
 from numpy import *
 import time
@@ -8,7 +8,9 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 from tkinter import * 
+import threading
 from PIL import Image, ImageTk 
+import imageio
 
 ##############################################################################
 ############################     Parameters     ##############################
@@ -179,6 +181,7 @@ def X_pos_plot(default_file_name):
     plt.legend()
     plt.savefig("Xposplot.png")
     #plt.show()
+    plt.close()
     
   
 def trajectory_plot(default_file_name):
@@ -207,11 +210,16 @@ def trajectory_plot(default_file_name):
     plt.legend()
     plt.savefig("trajectoryplot.png")
     #plt.show()
+    plt.close()
 ##############################################################################
 ############################     Tkinter        ##############################
 ##############################################################################
 
 def interface1() :
+    #afficherAnimation()
+    afficherXPlot()
+    afficherTrajPlot()
+    """
     canvas = Canvas(fenetre, width=250, height=100, bg='ivory')
     canvas.pack(side=TOP, padx=5, pady=5)
     txt = canvas.create_text(125, 50, text="Importez un fichier", font="Arial 16 italic", fill="black")
@@ -231,47 +239,65 @@ def importerClicked() :
     print(value.get())
     create_animation(default_save_name, value.get())
     trajectory_plot(value.get())
-    #X_pos_plot(value.get())
+    X_pos_plot(value.get())
     for widget in fenetre.winfo_children():
         widget.destroy()
     interface2()
-    print("done")
+    print("done")"""
     
-def interface2() :
+"""def interface2() :
     global canvas2
+    global label
+    label = Label(fenetre)
     canvas2 = Canvas(fenetre, width=250, height=100, bg='ivory')
     canvas2.pack(side=TOP, padx=5, pady=5)
-    #Button(fenetre, text ='Annimation',command = afficherAnimation).pack(side=BOTTOM)
-    Button(fenetre, text ='Xposplot',command = afficherXPlot).pack(side=BOTTOM)
-    #Button(fenetre, text ='Trajectoryplot',command = afficherTrajPlot).pack(side=BOTTOM)
-    
+    button1 = Button(fenetre, text ='Annimation',command = afficherAnimation).pack(side=BOTTOM)
+    button2 = Button(fenetre, text ='Xposplot',command = afficherXPlot).pack(side=BOTTOM)
+    button3 = Button(fenetre, text ='Trajectoryplot',command = afficherTrajPlot).pack(side=BOTTOM)
+"""
+
 def afficherXPlot():
-    print("ou")
+    canvas = Canvas(fenetre)    
     
+    image = Image.open("Xposplot.png") 
+    photo = ImageTk.PhotoImage(image) 
+ 
+    canvas.configure(width = image.size[0], height = image.size[1])
+    canvas.create_image(0,0, anchor = NW, image=photo)
+    canvas.pack() 
+
+    
+def afficherTrajPlot():
+    canvas = Canvas(fenetre)
     
     image = Image.open("trajectoryplot.png") 
     photo = ImageTk.PhotoImage(image) 
  
-    canvas = Canvas(fenetre, width = image.size[0], height = image.size[1]) 
+    canvas.configure(width = image.size[0], height = image.size[1])
     canvas.create_image(0,0, anchor = NW, image=photo)
     canvas.pack() 
     
-    """
-    img = PhotoImage(file="trajectoryplot.png")
+    fenetre.mainloop()
+
+def lecturevideo(label):
+
+    for image in video.iter_data():
+        frame_image = ImageTk.PhotoImage(Image.fromarray(image))
+        label.config(image=frame_image)
+        label.image = frame_image
+        time.sleep(0.01)
+        
+def afficherAnimation():
+    label = Label(fenetre)
     
-    canvas = Canvas(canvas.fenetre)
-    canvas.configure(width=img.width(), height=img.height())
-    canvas.create_image(img.width()/2,img.height()/2,image=img)
- 
-    canvas.image = img ## Association de l'image au canva.
- 
-    canvas.grid(row=1,column=1)"""
-    
-    """
-    canvas = Canvas(fenetre,width=1024, height=1024)
-    canvas.create_image(250, 250, anchor=NW, image=photo)
-    canvas.pack()"""
-    
+    global video
+    video_name = "resultat.mp4" #This is your video file path
+    video = imageio.get_reader(video_name)
+    label.pack()
+    thread = threading.Thread(target=lecturevideo, args=(label,))
+    thread.daemon = 1
+    thread.start()
+    fenetre.mainloop()
     
     
 fenetre = Tk()
