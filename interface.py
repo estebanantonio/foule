@@ -265,7 +265,6 @@ def X_pos_plot(default_file_name):
               [x_pos for x_pos in CoMPositions[:,i,0]],color=colors[0])
 
     plt.savefig("Xposplot.png")
-    plt.show()
     plt.close()
     
   
@@ -293,7 +292,6 @@ def trajectory_plot(default_file_name):
           [y_pos for y_pos in BoSPositions[:,i,1]]
               ,'-o')
     plt.savefig("trajectoryplot.png")
-    plt.show()
     plt.close()
 ##############################################################################
 ############################     Tkinter        ##############################
