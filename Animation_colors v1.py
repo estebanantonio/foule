@@ -13,7 +13,7 @@ import moviepy.editor as mp
 ############################     Parameters     ##############################
 ##############################################################################
 input_folder = './Sim/'
-output_file_name_test = input_folder+'test_line.txt'
+output_file_name_test = input_folder+'test_stability.txt'
 
 default_save_name = input_folder+'anim_test.gif'
 
