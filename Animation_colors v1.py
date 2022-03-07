@@ -1,4 +1,4 @@
-#Hello world! Ca fonctionne pas 
+#Hello world!
 #Commit2
 ## Animation : Post-process the output of the Solver to create an animation ##
 
@@ -13,7 +13,7 @@ import moviepy.editor as mp
 ############################     Parameters     ##############################
 ##############################################################################
 input_folder = './Sim/'
-output_file_name_test = input_folder+'test_line.txt'
+output_file_name_test = input_folder+'test_stability.txt'
 
 default_save_name = input_folder+'anim_test.gif'
 
@@ -73,25 +73,24 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
     fig, ax = plt.subplots()
     ax.set_aspect('equal')
 
- 
 
+    R1=[]
+    G1=[]
+    B1=[]
     R=[]
     G=[]
     for i in range(N_agents):
-<<<<<<< HEAD
+        R1.append(random.rand())
+        G1.append(random.rand())
+        B1.append(random.rand())
         R.append(0)
-        G.append(0.2)
-        
-=======
-        R.append(0.2)
         G.append(0.3)
 
->>>>>>> 8a2ef793c56adbded62cf584c51f2e239c34c74a
     # Initialize the patches that rpz the BoS
     BoS_anim = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.3, color='blue',alpha=0.5) ) for pos in BoSPositions[0]]
     # Initialize the patches that rpz the CoM
     CoM_anim = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.3, color=[R[i],G[i],0.1],alpha=1) ) for pos in CoMPositions[0]]
-
+    CoM_animAgent = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.15, color=[R1[i],G1[i],B1[i]],alpha=0.7) ) for pos in CoMPositions[0]]
 
     Linkes = []
     for i in range (len(BoSPositions[0])):
@@ -108,10 +107,10 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
     # Set the Size of the final canevas
     # Set the Size of the final canevas
     agent_radius = 0.5
-    xmin = min( [ min(BoSPositions[:,:,0].flatten()),  min(CoMPositions[:,:,0].flatten()) ] )*1.2
-    xmax = max( [ max(BoSPositions[:,:,0].flatten()), max(CoMPositions[:,:,0].flatten()) ]  )*1.2
-    ymin = min( [ min(BoSPositions[:,:,1].flatten()), min(CoMPositions[:,:,1].flatten()) ] )*1.2
-    ymax = max( [ max(BoSPositions[:,:,1].flatten()), max(CoMPositions[:,:,1].flatten()) ] )*1.2
+    xmin = min( [ min(BoSPositions[:,:,0].flatten()),  min(CoMPositions[:,:,0].flatten()) ] )*1.2 - agent_radius
+    xmax = max( [ max(BoSPositions[:,:,0].flatten()), max(CoMPositions[:,:,0].flatten()) ]  )*1.2 + agent_radius
+    ymin = min( [ min(BoSPositions[:,:,1].flatten()), min(CoMPositions[:,:,1].flatten()) ] )*1.2 - agent_radius
+    ymax = max( [ max(BoSPositions[:,:,1].flatten()), max(CoMPositions[:,:,1].flatten()) ] )*1.2 + agent_radius
 
     if abs(xmin)-1e-3 < agent_radius : xmin = -2*agent_radius
     if abs(ymin)-1e-3 < agent_radius : ymin = -2*agent_radius
@@ -137,15 +136,12 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
 
         #ax.patches = ax.patches[0:N_agents]
         t_step += 1
-<<<<<<< HEAD
-=======
 
->>>>>>> 8a2ef793c56adbded62cf584c51f2e239c34c74a
         for i in range(N_agents):
 
 
             Diff=sqrt((CoMPositions[t_step,i,0]-BoSPositions[t_step,i,0])**2 + (CoMPositions[t_step,i,1]-BoSPositions[t_step,i,1])**2)
-<<<<<<< HEAD
+
             
             R[i] = Diff/maxdiff
             if R[i] < 0:
@@ -154,22 +150,9 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
                 R[i]=1
             else:
                 pass
-=======
-            maxdiff = 0
-            if Diff0[i]-Diff<0 and R[i] < 0.9:
-                R[i]+=0.1
-
-            elif Diff0[i]-Diff>0 and R[i]>0.1:
-                R[i]-=0.1
-            else:
-                pass
-            if maxdiff < abs(Diff0[i]-Diff):
-                maxdiff = abs(Diff0[i]-Diff)
-            Diff0[i]=Diff
-
->>>>>>> 8a2ef793c56adbded62cf584c51f2e239c34c74a
             CoM_anim[i].set_color((R[i],G[i],0.2))
-
+            CoM_animAgent[i].set_color((R1[i],G1[i],B1[i]))
+            CoM_animAgent[i].set_center((CoMPositions[t_step,i,0], CoMPositions[t_step,i,1]))
             CoM_anim[i].set_center((CoMPositions[t_step,i,0], CoMPositions[t_step,i,1]))
             BoS_anim[i].set_center((BoSPositions[t_step,i,0], BoSPositions[t_step,i,1]))
 
@@ -181,11 +164,7 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
         
         return None
 
-<<<<<<< HEAD
-##diff maximum = 0,699316
-=======
 
->>>>>>> 8a2ef793c56adbded62cf584c51f2e239c34c74a
     #Set the the interval between frames so the visualisation is at real speed
     interval_delay = int(dt*1000) # milliseconds between frames (must be an int)
 
