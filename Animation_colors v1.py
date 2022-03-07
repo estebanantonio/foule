@@ -87,10 +87,10 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
         G.append(0.3)
 
     # Initialize the patches that rpz the BoS
-    BoS_anim = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.3, color='blue',alpha=0.5) ) for pos in BoSPositions[0]]
+    BoS_anim = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.3, color='green',alpha=0.90) ) for pos in BoSPositions[0]]
     # Initialize the patches that rpz the CoM
     CoM_anim = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.3, color=[R[i],G[i],0.1],alpha=1) ) for pos in CoMPositions[0]]
-    CoM_animAgent = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.15, color=[R1[i],G1[i],B1[i]],alpha=0.7) ) for pos in CoMPositions[0]]
+    CoM_animAgent = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.15, color=[R1[i],G1[i],B1[i]],alpha=1) ) for pos in CoMPositions[0]]
 
     Linkes = []
     for i in range (len(BoSPositions[0])):
@@ -98,8 +98,8 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
                         plt.Line2D([], [],
                                 lw=5., ls='-', marker='o',
                                 markersize=5,
-                                markerfacecolor='r',
-                                markeredgecolor='r',
+                                markerfacecolor=[R1[i],G1[i],B1[i]],
+                                markeredgecolor=[R1[i],G1[i],B1[i]],
                                 alpha=0.5) ) )
 
 
