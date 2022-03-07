@@ -1,4 +1,4 @@
-#Hello world!
+#Hello world! Ca fonctionne pas 
 #Commit2
 ## Animation : Post-process the output of the Solver to create an animation ##
 
@@ -73,7 +73,7 @@ def create_animation(save_name = default_save_name, output_file_name = output_fi
     fig, ax = plt.subplots()
     ax.set_aspect('equal')
 
-
+ 
 
     R=[]
     G=[]
