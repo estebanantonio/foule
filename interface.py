@@ -16,7 +16,7 @@ import imageio
 ############################     Parameters     ##############################
 ##############################################################################
 input_folder = './Sim/'
-default_file_name = input_folder+'test_line.txt'
+default_file = input_folder+'test_line.txt'
 
 default_save_name = input_folder+'anim_test.gif'
 
@@ -175,8 +175,8 @@ def create_animation(save_name, output_file_name):
                                    interval=interval_delay)
 
     anim.save(save_name, writer='Pillow')
-    clip = mp.VideoFileClip(save_name)
-    clip.write_videofile("resultat.mp4")
+    #clip = mp.VideoFileClip(save_name)
+    #clip.write_videofile("resultat.mp4")
     #plt.show()
     return None
     
@@ -239,7 +239,7 @@ def create_animation(save_name, output_file_name):
 
 #create_animation()
 def X_pos_plot(default_file_name):
-    
+    plt.clf()
     Time, CoMPositions, BoSPositions = load_output(default_file_name)
     #print("TimeSteps : ",Time[1:]-Time[:-1])
     N_agents = len(CoMPositions[0]) # Number of agents
@@ -264,14 +264,13 @@ def X_pos_plot(default_file_name):
               Time,
               [x_pos for x_pos in CoMPositions[:,i,0]],color=colors[0])
 
-    plt.legend()
     plt.savefig("Xposplot.png")
-    #plt.show()
+    plt.show()
     plt.close()
     
   
 def trajectory_plot(default_file_name):
-    
+    plt.clf()
     Time, CoMPositions, BoSPositions = load_output(default_file_name)
     print("TimeSteps : ",Time[1:]-Time[:-1])
     N_agents = len(CoMPositions[0]) # Number of agents
@@ -293,9 +292,8 @@ def trajectory_plot(default_file_name):
           [x_pos for x_pos in BoSPositions[:,i,0]],
           [y_pos for y_pos in BoSPositions[:,i,1]]
               ,'-o')
-    plt.legend()
     plt.savefig("trajectoryplot.png")
-    #plt.show()
+    plt.show()
     plt.close()
 ##############################################################################
 ############################     Tkinter        ##############################
@@ -313,7 +311,7 @@ def interface1() :
     
     # entrée
     value = StringVar() 
-    value.set(default_file_name)    
+    value.set(default_file)    
     entree = Entry(fenetre, textvariable=value, width=30)
     entree.pack(side=BOTTOM, pady=5)
     
@@ -323,11 +321,11 @@ def interface1() :
 
 def importerClicked() :
     print(value.get())
-    #create_animation(default_save_name, value.get())
-    print("finished annimation")
-    trajectory_plot(value.get())
+    create_animation("tet.gif", "./Sim/test_line.txt") #default_save_name
+    print("finished animation")
+    trajectory_plot("./Sim/test_line.txt")
     print("finished traj")
-    X_pos_plot(value.get())
+    X_pos_plot("./Sim/test_line.txt")
     print("finished xplot")
     
     for widget in fenetre.winfo_children():
@@ -341,7 +339,7 @@ def interface2() :
     label = Label(fenetre)
     canvas2 = Canvas(fenetre, width=250, height=100, bg='ivory')
     canvas2.pack(side=TOP, padx=5, pady=5)
-    button1 = Button(fenetre, text ='Annimation',command = afficherAnimation).pack(side=BOTTOM)
+    button1 = Button(fenetre, text ='Animation',command = afficherAnimation).pack(side=BOTTOM)
     button2 = Button(fenetre, text ='Xposplot',command = afficherXPlot).pack(side=BOTTOM)
     button3 = Button(fenetre, text ='Trajectoryplot',command = afficherTrajPlot).pack(side=BOTTOM)
 
