@@ -93,7 +93,7 @@ def create_animation(save_name, output_file_name):
     BoS_anim = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.3, color='blue',alpha=0.5) ) for pos in BoSPositions[0]]
     # Initialize the patches that rpz the CoM
     CoM_anim = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.3, color=[R[i],G[i],0.1],alpha=1) ) for pos in CoMPositions[0]]
-    CoM_animAgent = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.15, color=[R1[i],G1[i],B1[i]],alpha=0.7) ) for pos in CoMPositions[0]]
+    CoM_animAgent = [ax.add_patch(plt.Circle((pos[0], pos[1]), 0.15, color=[R1[i],G1[i],B1[i]],alpha=1) ) for pos in CoMPositions[0]]
 
     Linkes = []
     for i in range (len(BoSPositions[0])):
@@ -186,8 +186,8 @@ def create_animation(save_name, output_file_name):
     # Set the Size of the final canevas 
     agent_radius = 0.5
     xmin = min( [ min(BoSPositions[:,:,0].flatten()),  min(CoMPositions[:,:,0].flatten()) ] )*1.2
-    xmax = max( [ max(BoSPositions[:,:,0].flatten()), max(CoMPositions[:,:,0].flatten()) ]  )*1.2
-    ymin = min( [ min(BoSPositions[:,:,1].flatten()), min(CoMPositions[:,:,1].flatten()) ] )*1.2
+    xmax = max( [ max(BoSPositions[:,:,0].flatten()), max(CoMPositions[:,:,0].flatten()) ]  )*1.2 
+    ymin = min( [ min(BoSPositions[:,:,1].flatten()), min(CoMPositions[:,:,1].flatten()) ] )*1.2 
     ymax = max( [ max(BoSPositions[:,:,1].flatten()), max(CoMPositions[:,:,1].flatten()) ] )*1.2
     
     if abs(xmin)-1e-3 < agent_radius : xmin = -2*agent_radius
@@ -321,11 +321,11 @@ def interface1() :
 
 def importerClicked() :
     print(value.get())
-    create_animation(default_save_name, value.get()) #default_save_name
+    #create_animation(default_save_name, value.get()) #default_save_name
     print("finished animation")
-    trajectory_plot(value.get())
+    #trajectory_plot(value.get())
     print("finished traj")
-    X_pos_plot(value.get())
+    #X_pos_plot(value.get())
     print("finished xplot")
     
     for widget in fenetre.winfo_children():
@@ -385,6 +385,10 @@ def afficherAnimation():
     video = imageio.get_reader(video_name)
     for i,im in enumerate(video) :
         l.append(im)
+    
+    w = Scale(fenetre, from_=0, to=200, orient=HORIZONTAL)
+    w.pack()
+    
     label.pack()
     thread = threading.Thread(target=lecturevideo, args=(label,))
     thread.daemon = 1
